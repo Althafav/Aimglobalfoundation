@@ -24,7 +24,7 @@ export default function FooterComponent() {
         <NewsLetterForm />
       </Section>
       <div className=" bg-gradient-1 py-8 relative">
-        <img
+        {/* <img
           className="absolute bottom-0 left-0 h-full object-contain hidden sm:block"
           src="/assets/imgs/aimlogowatermark.png"
           alt="aimlogo water mark"
@@ -33,7 +33,7 @@ export default function FooterComponent() {
           className="absolute top-0 right-0  h-full object-cover"
           src="/assets/imgs/aimlogowatermark2.png"
           alt="aimlogo water mark"
-        />
+        /> */}
         <div className="container mx-auto">
           <div className="flex justify-between sm:flex-row flex-col gap-5">
             <div>

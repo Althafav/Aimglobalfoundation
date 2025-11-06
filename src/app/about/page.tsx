@@ -25,14 +25,14 @@ export default async function page() {
               return (
                 <div
                   key={item.system.id}
-                  className="relative rounded-3xl w-full h-[350px] p-10 overflow-hidden flex items-end"
+                  className="relative group rounded-3xl w-full h-[350px] p-10 overflow-hidden flex items-end"
                 >
                   <Image
                     width={600}
                     height={400}
                     src={item.elements.image.value[0]?.url}
                     alt={item.elements.image.value[0]?.name}
-                    className="absolute inset-0 w-full h-full object-cover"
+                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 scale-110 group-hover:scale-125"
                   />
                   <div className="relative">
                     <h4 className="text-white mb-3 text-3xl font-bold">
@@ -64,7 +64,7 @@ export default async function page() {
                 return (
                   <div
                     key={item.system.id}
-                    className=" rounded-3xl w-full h-full overflow-hidden "
+                    className=" rounded-3xl w-full h-full overflow-hidden hover-lift-with-shadow-lg"
                   >
                     <div className="p-5 bg-[#F8F8F8] h-[200px] flex flex-col items-center justify-start">
                       <h4 className="text-primary mb-3 text-xl font-bold text-center uppercase">
@@ -78,13 +78,15 @@ export default async function page() {
                       />
                     </div>
 
-                    <Image
-                      width={600}
-                      height={400}
-                      src={item.elements.image.value[0]?.url}
-                      alt={item.elements.image.value[0]?.name}
-                      className="aspect-video"
-                    />
+                    <div className="group">
+                      <Image
+                        width={600}
+                        height={400}
+                        src={item.elements.image.value[0]?.url}
+                        alt={item.elements.image.value[0]?.name}
+                        className="aspect-video "
+                      />
+                    </div>
                   </div>
                 );
               })}
@@ -95,6 +97,5 @@ export default async function page() {
     </div>
   );
 }
-
 
 export const revalidate = 0;

@@ -58,7 +58,7 @@ export default function InitiativeSection({
                       (featureItem: any) => (
                         <div
                           key={featureItem.system.id}
-                          className="p-4 max-w-[298px] bg-gray-50 rounded-lg border border-gray-100 hover:shadow-md transition-all"
+                          className="p-4 max-w-[298px] bg-gray-50 rounded-lg border border-gray-100 hover:shadow-md transition-all hover-lift-with-shadow-lg"
                         >
                           <h4 className="text-lg font-medium mb-2 text-gradient-1">
                             {featureItem.elements.name.value}

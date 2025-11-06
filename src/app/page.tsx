@@ -65,7 +65,7 @@ export default async function Home() {
                   return (
                     <div
                       key={item.system.id}
-                      className={`sm:flex rounded-3xl overflow-hidden ${
+                      className={`sm:flex rounded-3xl overflow-hidden  ${
                         isOdd ? "sm:flex-row-reverse" : ""
                       }`}
                     >

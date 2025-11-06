@@ -55,7 +55,7 @@ export default function PartnerShipSection({
               items.map((item: any) => (
                 <div
                   key={item.system.id}
-                  className="bg-[#F8F8F8] p-5 rounded-2xl shrink-0 mx-2 
+                  className="bg-[#F8F8F8] p-5 rounded-2xl shrink-0 mx-2  hover-lift-with-shadow-lg
                     flex-[0_0_calc(100%)] sm:flex-[0_0_calc(100%/3)] "
                 >
                   <h4 className="mb-3 text-gradient-1 text-xl font-medium">
