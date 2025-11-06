@@ -53,12 +53,12 @@ export default function InitiativeSection({
               {/* Features Grid */}
               <div className="">
                 {item.elements.featureitems?.linkedItems?.length > 0 && (
-                  <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                  <div className="mt-6 flex flex-wrap gap-5 justify-center">
                     {item.elements.featureitems.linkedItems.map(
                       (featureItem: any) => (
                         <div
                           key={featureItem.system.id}
-                          className="p-4 w-full bg-gray-50 rounded-lg border border-gray-100 hover:shadow-md transition-all"
+                          className="p-4 max-w-[298px] bg-gray-50 rounded-lg border border-gray-100 hover:shadow-md transition-all"
                         >
                           <h4 className="text-lg font-medium mb-2 text-gradient-1">
                             {featureItem.elements.name.value}
