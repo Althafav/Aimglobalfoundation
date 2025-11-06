@@ -10,9 +10,9 @@ export const deliveryClient = createDeliveryClient({
 
   previewApiKey:
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI2NTZhYWMxMzQyMjc0OWY4YmZiZWVjN2MwMmI4ZDJiNyIsImlhdCI6MTc2MjMyNzgwNywibmJmIjoxNzYyMzI3ODA3LCJleHAiOjE4MzU0MjIxNDAsInZlciI6IjIuMC4wIiwic2NvcGVfaWQiOiJiYzc1ZGI0ZGFlYTg0ODc5OTZhYTQwZWJiMmMyMGMyNCIsInByb2plY3RfY29udGFpbmVyX2lkIjoiMzFjZTcxOGU5MzhkMDAwM2NkNmVlZGNhMGM1MmVhYzAiLCJhdWQiOiJkZWxpdmVyLmtvbnRlbnQuYWkifQ.25NG0LCEn-P3UiOApWHtmKXQXt6SH87iRtjHaVSsOzo",
-  excludeArchivedItems: !isPreview,
+  excludeArchivedItems: true,
   defaultQueryConfig: {
-    usePreviewMode: isPreview,
+    usePreviewMode: true,
   },
 });
 
