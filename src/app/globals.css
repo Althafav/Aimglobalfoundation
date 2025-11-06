@@ -1,0 +1,91 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+@theme {
+  --color-primary: #099ffc;
+
+  --color-primaryDark: #1b3966;
+}
+
+@utility hover-lift-with-shadow-lg {
+  @apply transform transition-transform duration-300 hover:-translate-y-2 hover:shadow-lg;
+}
+
+@utility inline-padding {
+  @apply py-12 sm:py-16;
+}
+
+.container {
+  width: 100%;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  margin-left: auto;
+  margin-right: auto;
+
+  /* Small (sm) - default mobile */
+  @media screen and (min-width: 640px) {
+    max-width: 640px;
+  }
+
+  /* Medium (md) */
+  @media screen and (min-width: 768px) {
+    max-width: 768px;
+  }
+
+  /* Large (lg) */
+  @media screen and (min-width: 1024px) {
+    max-width: 1024px;
+  }
+
+  /* Extra Large (xl) */
+  @media screen and (min-width: 1280px) {
+    max-width: 1280px;
+  }
+
+  /* 2XL */
+  @media screen and (min-width: 1400px) {
+    max-width: 1300px;
+  }
+
+  /* 3XL or custom larger breakpoint */
+  @media screen and (min-width: 1536px) {
+    max-width: 1480px;
+  }
+}
+
+.text-gradient-1 {
+  background: linear-gradient(198.2deg, #081a2e 0%, #099ffc 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+}
+
+.text-gradient-2 {
+  background: linear-gradient(
+    199deg,
+    #fff -9.19%,
+    #b6e2fe 46.46%,
+    #099ffc 125.13%
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.bg-gradient-1 {
+  background: linear-gradient(198.2deg, #081a2e 0%, #099ffc 100%);
+}
+
+.bg-gradient-2 {
+  background: linear-gradient(
+    199deg,
+    #fff -9.19%,
+    #b6e2fe 46.46%,
+    #099ffc 125.13%
+  );
+}
+
+.hero-section-wrapper {
+  background: linear-gradient(to bottom, #fff 31.08%, #b6e2fe, white);
+}
