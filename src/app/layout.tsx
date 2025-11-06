@@ -13,10 +13,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+      </head>
       <body className={`${inter.variable} font-sans antialiased`}>
         <MenuComponent />
         {children}
-        <FooterComponent/>
+        <FooterComponent />
       </body>
     </html>
   );

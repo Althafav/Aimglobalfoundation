@@ -23,7 +23,17 @@ export default function FooterComponent() {
       <Section className="container mx-auto">
         <NewsLetterForm />
       </Section>
-      <div className=" bg-gradient-1 py-5">
+      <div className=" bg-gradient-1 py-8 relative">
+        <img
+          className="absolute bottom-0 left-0 h-full object-contain hidden sm:block"
+          src="/assets/imgs/aimlogowatermark.png"
+          alt="aimlogo water mark"
+        />
+        <img
+          className="absolute top-0 right-0  h-full object-cover"
+          src="/assets/imgs/aimlogowatermark2.png"
+          alt="aimlogo water mark"
+        />
         <div className="container mx-auto">
           <div className="flex justify-between sm:flex-row flex-col gap-5">
             <div>
@@ -241,7 +251,7 @@ export default function FooterComponent() {
                 <Link
                   key={item.system.id}
                   href={item.elements.link.value}
-                  className="text-white text-md font-medium hover:text-gray-200"
+                  className="text-white text-md font-medium hover:text-gray-200 cursor-pointer"
                 >
                   {item.elements.name.value}
                 </Link>

@@ -69,7 +69,7 @@ export default function NewsLetterForm() {
             </div>
           </div>
           <div
-            className="_form-newsletter-thank-you subscribe-message text-success _form-thank-you"
+            className="_form-newsletter-thank-you subscribe-message text-success _form-thank-you text-center"
             style={{ display: "none" }}
           ></div>
         </form>

@@ -9,7 +9,7 @@ import Image from "next/image";
 export default async function Home() {
   const pageResponse = await deliveryClient
     .item("home_page")
-    .depthParameter(2)
+    .depthParameter(3)
     .toPromise();
 
   const pageData = pageResponse.data.item.elements as any;
@@ -21,7 +21,7 @@ export default async function Home() {
         bannerheading={pageData.bannerheading.value}
         bannersubheading={pageData.bannersubheading.value}
         bannerimage={pageData.bannerimage.value[0]?.url}
-        bannervideosrc={pageData.bannervideolink.value[0]?.url}
+        bannervideosrc={pageData.bannervideolink.value}
         ctabuttons={pageData.bannercta?.linkedItems}
       />
 

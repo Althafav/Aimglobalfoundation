@@ -1,34 +1,20 @@
 window.cfields = [];
 window._show_thank_you = function (id, message, trackcmp_url, email) {
-  var form = document.getElementById("_form_" + id + "_"),
-    thank_you = form.querySelector("._form-thank-you");
-  form.querySelector("._form-content").style.display = "none";
-  thank_you.innerHTML = message;
-  thank_you.style.display = "block";
-  const vgoAlias =
-    typeof visitorGlobalObjectAlias === "undefined"
-      ? "vgo"
-      : visitorGlobalObjectAlias;
-  var visitorObject = window[vgoAlias];
-  if (email && typeof visitorObject !== "undefined") {
-    visitorObject("setEmail", email);
-    visitorObject("update");
-  } else if (typeof trackcmp_url != "undefined" && trackcmp_url) {
-    // Site tracking URL to use after inline form submission.
-    _load_script(trackcmp_url);
+  if (id == "110") {
+    var form = document.getElementById("_form_" + id + "_"),
+      thank_you = form.querySelector("._form-newsletter-thank-you");
+    form.querySelector("._form-content").style.display = "none";
+    thank_you.innerHTML = message;
+    thank_you.style.display = "block";
+  } else {
+    var form = document.getElementById("_form_" + id + "_"),
+      thank_you = form.querySelector("._form-thank-you");
+    form.querySelector("._form-content").style.display = "none";
+    if (message) {
+      thank_you.innerHTML = message;
+    }
+    thank_you.style.display = "block";
   }
-  if (typeof window._form_callback !== "undefined") window._form_callback(id);
-};
-window._show_unsubscribe = function (id, message, trackcmp_url, email) {
-  var form = document.getElementById("_form_" + id + "_"),
-    unsub = form.querySelector("._form-thank-you");
-  var branding = form.querySelector("._form-branding");
-  if (branding) {
-    branding.style.display = "none";
-  }
-  form.querySelector("._form-content").style.display = "none";
-  unsub.style.display = "block";
-  form.insertAdjacentHTML("afterend", message);
   const vgoAlias =
     typeof visitorGlobalObjectAlias === "undefined"
       ? "vgo"
@@ -46,13 +32,13 @@ window._show_unsubscribe = function (id, message, trackcmp_url, email) {
 window._show_error = function (id, message, html) {
   var form = document.getElementById("_form_" + id + "_"),
     err = document.createElement("div"),
-    button = form.querySelector('button[type="submit"]'),
+    button = form.querySelector("button"),
     old_error = form.querySelector("._form_error");
   if (old_error) old_error.parentNode.removeChild(old_error);
   err.innerHTML = message;
   err.className = "_error-inner _form_error _no_arrow";
   var wrapper = document.createElement("div");
-  wrapper.className = "_form-inner _show_be_error";
+  wrapper.className = "_form-inner";
   wrapper.appendChild(err);
   button.parentNode.insertBefore(wrapper, button);
   var submitButton = form.querySelector('[id^="_form"][id$="_submit"]');
@@ -65,59 +51,12 @@ window._show_error = function (id, message, html) {
     err.appendChild(div);
   }
 };
-window._show_pc_confirmation = function (id, header, detail, show, email) {
-  var form = document.getElementById("_form_" + id + "_"),
-    pc_confirmation = form.querySelector("._form-pc-confirmation");
-  if (pc_confirmation.style.display === "none") {
-    form.querySelector("._form-content").style.display = "none";
-    pc_confirmation.innerHTML =
-      "<div class='_form-title'>" +
-      header +
-      "</div>" +
-      "<p>" +
-      detail +
-      "</p>" +
-      "<button class='_submit' id='hideButton'>Manage preferences</button>";
-    pc_confirmation.style.display = "block";
-    var mp = document.querySelector('input[name="mp"]');
-    mp.value = "0";
-  } else {
-    form.querySelector("._form-content").style.display = "inline";
-    pc_confirmation.style.display = "none";
-  }
-
-  var hideButton = document.getElementById("hideButton");
-  // Add event listener to the button
-  hideButton.addEventListener("click", function () {
-    var submitButton = document.querySelector("#_form_110_submit");
-    submitButton.disabled = false;
-    submitButton.classList.remove("processing");
-    var mp = document.querySelector('input[name="mp"]');
-    mp.value = "1";
-    const cacheBuster = new URL(window.location.href);
-    cacheBuster.searchParams.set("v", new Date().getTime());
-    window.location.href = cacheBuster.toString();
-  });
-
-  const vgoAlias =
-    typeof visitorGlobalObjectAlias === "undefined"
-      ? "vgo"
-      : visitorGlobalObjectAlias;
-  var visitorObject = window[vgoAlias];
-  if (email && typeof visitorObject !== "undefined") {
-    visitorObject("setEmail", email);
-    visitorObject("update");
-  } else if (typeof trackcmp_url != "undefined" && trackcmp_url) {
-    // Site tracking URL to use after inline form submission.
-    _load_script(trackcmp_url);
-  }
-  if (typeof window._form_callback !== "undefined") window._form_callback(id);
-};
 window._load_script = function (url, callback, isSubmit) {
   var head = document.querySelector("head"),
     script = document.createElement("script"),
     r = false;
   var submitButton = document.querySelector("#_form_110_submit");
+  script.type = "text/javascript";
   script.charset = "utf-8";
   script.src = url;
   if (callback) {
@@ -146,7 +85,6 @@ window._load_script = function (url, callback, isSubmit) {
   head.appendChild(script);
 };
 (function () {
-  var iti;
   if (window.location.search.search("excludeform") !== -1) return false;
   var getCookie = function (name) {
     var match = document.cookie.match(new RegExp("(^|; )" + name + "=([^;]+)"));
@@ -183,33 +121,14 @@ window._load_script = function (url, callback, isSubmit) {
     submitted = false;
 
   var getUrlParam = function (name) {
-    if (name.toLowerCase() !== "email") {
-      var params = new URLSearchParams(window.location.search);
-      return params.get(name) || false;
-    }
-    // email is a special case because a plus is valid in the email address
-    var qString = window.location.search;
-    if (!qString) {
-      return false;
-    }
-    var parameters = qString.substr(1).split("&");
-    for (var i = 0; i < parameters.length; i++) {
-      var parameter = parameters[i].split("=");
-      if (parameter[0].toLowerCase() === "email") {
-        return parameter[1] === undefined
-          ? true
-          : decodeURIComponent(parameter[1]);
-      }
-    }
-    return false;
+    var params = new URLSearchParams(window.location.search);
+    return params.get(name) || false;
   };
 
   var acctDateFormat = "%d/%B/%Y";
   var getNormalizedDate = function (date, acctFormat) {
     var decodedDate = decodeURIComponent(date);
-    if (acctFormat && acctFormat.match(/(%d|%e).*%m/gi) !== null) {
-      return decodedDate.replace(/(\d{2}).*(\d{2}).*(\d{4})/g, "$3-$2-$1");
-    } else if (Date.parse(decodedDate)) {
+    if (Date.parse(decodedDate)) {
       var dateObj = new Date(decodedDate);
       var year = dateObj.getFullYear();
       var month = dateObj.getMonth() + 1;
@@ -217,6 +136,8 @@ window._load_script = function (url, callback, isSubmit) {
       return `${year}-${month < 10 ? `0${month}` : month}-${
         day < 10 ? `0${day}` : day
       }`;
+    } else if (acctFormat.match(/(%d|%e).*%m/gm) !== null) {
+      return decodedDate.replace(/(\d{1,2}).*(\d{1,2}).*(\d{4})/gm, "$3-$1-$2");
     }
     return false;
   };
@@ -242,7 +163,7 @@ window._load_script = function (url, callback, isSubmit) {
       // 24 hour format
       hour = timeParts[1];
     }
-    var normalizedHour = parseInt(hour) < 10 ? `0${parseInt(hour)}` : hour;
+    var normalizedHour = parseInt(hour) < 10 ? `0${hour}` : hour;
     var minutes = timeParts[2];
     return `${normalizedHour}:${minutes}`;
   };
@@ -297,10 +218,7 @@ window._load_script = function (url, callback, isSubmit) {
       arrow = document.createElement("div"),
       inner = document.createElement("div"),
       new_tooltip = {};
-    if (
-      elem.type != "radio" &&
-      (elem.type != "checkbox" || elem.name === "sms_consent")
-    ) {
+    if (elem.type != "radio" && elem.type != "checkbox") {
       tooltip.className = "_error";
       arrow.className = "_error-arrow";
       inner.className = "_error-inner";
@@ -419,6 +337,12 @@ window._load_script = function (url, callback, isSubmit) {
         tooltip = create_tooltip(elem, "This field is required.");
       }
     }
+    if (no_error && (elem.id == "field[]" || elem.id == "ca[11][v]")) {
+      if (elem.className.includes("phone-input-error")) {
+        elem.className = elem.className + " _has_error";
+        no_error = false;
+      }
+    }
     if (no_error && elem.name == "email") {
       if (
         !value.match(
@@ -430,37 +354,11 @@ window._load_script = function (url, callback, isSubmit) {
         tooltip = create_tooltip(elem, "Enter a valid email address.");
       }
     }
-    if (no_error && elem.id == "phone") {
-      if (
-        elem.value.trim() &&
-        typeof iti != "undefined" &&
-        !iti.isValidNumber()
-      ) {
-        elem.className = elem.className + " _has_error";
-        no_error = false;
-        tooltip = create_tooltip(elem, "Enter a valid phone number.");
-      }
-    }
     if (no_error && /date_field/.test(elem.className)) {
       if (!value.match(/^\d\d\d\d-\d\d-\d\d$/)) {
         elem.className = elem.className + " _has_error";
         no_error = false;
         tooltip = create_tooltip(elem, "Enter a valid date.");
-      }
-    }
-
-    if (no_error && elem.name === "sms_consent") {
-      const phoneInput = document.getElementById("phone");
-      const consentRequired =
-        phoneInput.attributes.required || phoneInput.value.length > 0;
-      const showError =
-        (consentRequired || !!elem.attributes.required) && !elem.checked;
-      if (showError) {
-        elem.className = elem.className + " _has_error";
-        no_error = false;
-        tooltip = create_tooltip(elem, "Please check this box to continue");
-      } else {
-        elem.className = elem.className.replace(/ ?_has_error ?/g, "");
       }
     }
     tooltip ? resize_tooltip(tooltip) : false;
@@ -470,9 +368,13 @@ window._load_script = function (url, callback, isSubmit) {
     if (el.getAttribute("required") !== null) {
       return true;
     }
+    if (el.name === "email" && el.value !== "") {
+      return true;
+    }
+
     if (
-      (el.name === "email" || el.id === "phone" || el.id === "sms_consent") &&
-      el.value !== ""
+      (el.id == "field[]" || el.id == "ca[11][v]") &&
+      el.className.includes("phone-input-error")
     ) {
       return true;
     }
@@ -487,11 +389,16 @@ window._load_script = function (url, callback, isSubmit) {
       for (var i = 0, len = allInputs.length; i < len; i++) {
         var input = allInputs[i];
         if (needs_validate(input)) {
+          if (input.type == "tel") {
+            addEvent(input, "blur", function () {
+              this.value = this.value.trim();
+              validate_field(this, true);
+            });
+          }
           if (
             input.type == "text" ||
             input.type == "number" ||
-            input.type == "time" ||
-            input.type == "tel"
+            input.type == "time"
           ) {
             addEvent(input, "blur", function () {
               this.value = this.value.trim();
@@ -502,16 +409,9 @@ window._load_script = function (url, callback, isSubmit) {
             });
           } else if (input.type == "radio" || input.type == "checkbox") {
             (function (el) {
-              function getElementsArray(name) {
-                const value = form_to_submit.elements[name];
-                if (Array.isArray(value)) {
-                  return value;
-                }
-                return [value];
-              }
-              var radios = getElementsArray(el.name);
+              var radios = form_to_submit.elements[el.name];
               for (var i = 0; i < radios.length; i++) {
-                addEvent(radios[i], "change", function () {
+                addEvent(radios[i], "click", function () {
                   validate_field(el, true);
                 });
               }
@@ -547,6 +447,63 @@ window._load_script = function (url, callback, isSubmit) {
   addEvent(window, "resize", resize_tooltips);
   addEvent(window, "scroll", resize_tooltips);
 
+  var hidePhoneInputError = function (inputId) {
+    var errorMessage = document.getElementById("error-msg-" + inputId);
+    var input = document.getElementById(inputId);
+    errorMessage.classList.remove("phone-error");
+    errorMessage.classList.add("phone-error-hidden");
+    input.classList.remove("phone-input-error");
+  };
+
+  var initializePhoneInput = function (input, defaultCountry) {
+    return window.intlTelInput(input, {
+      utilsScript: "https://unpkg.com/intl-tel-input@17.0.18/build/js/utils.js",
+      autoHideDialCode: false,
+      separateDialCode: true,
+      initialCountry: defaultCountry,
+      preferredCountries: [],
+    });
+  };
+
+  var setPhoneInputEventListeners = function (inputId, input, iti) {
+    input.addEventListener("blur", function () {
+      var errorMessage = document.getElementById("error-msg-" + inputId);
+      if (input.value.trim()) {
+        if (iti.isValidNumber()) {
+          iti.setNumber(iti.getNumber());
+          if (errorMessage.classList.contains("phone-error")) {
+            hidePhoneInputError(inputId);
+          }
+        } else {
+          showPhoneInputError(inputId);
+        }
+      } else {
+        if (errorMessage.classList.contains("phone-error")) {
+          hidePhoneInputError(inputId);
+        }
+      }
+    });
+
+    input.addEventListener("countrychange", function () {
+      iti.setNumber("");
+    });
+
+    input.addEventListener("keydown", function (e) {
+      var charCode = e.which ? e.which : e.keyCode;
+      if (charCode > 31 && (charCode < 48 || charCode > 57) && charCode !== 8) {
+        e.preventDefault();
+      }
+    });
+  };
+
+  var showPhoneInputError = function (inputId) {
+    var errorMessage = document.getElementById("error-msg-" + inputId);
+    var input = document.getElementById(inputId);
+    errorMessage.classList.add("phone-error");
+    errorMessage.classList.remove("phone-error-hidden");
+    input.classList.add("phone-input-error");
+  };
+
   window["recaptcha_callback"] = function () {
     // Get all recaptchas in the DOM (there may be more than one form on the page).
     var recaptchas = document.getElementsByClassName("g-recaptcha");
@@ -558,7 +515,9 @@ window._load_script = function (url, callback, isSubmit) {
       if (el != null) {
         var sitekey = el.getAttribute("data-sitekey");
         var stoken = el.getAttribute("data-stoken");
-        grecaptcha.render(recaptcha_id, { sitekey: sitekey, stoken: stoken });
+        try {
+          grecaptcha.render(recaptcha_id, { sitekey: sitekey, stoken: stoken });
+        } catch (e) {}
       }
     }
   };
@@ -667,18 +626,10 @@ window._load_script = function (url, callback, isSubmit) {
     }
     return q.join("&");
   };
-
-  const formSupportsPost = false;
   var form_submit = function (e) {
+    debugger;
     e.preventDefault();
     if (validate_form()) {
-      if (
-        form_to_submit.querySelector('input[name="phone"]') &&
-        typeof iti != "undefined"
-      ) {
-        form_to_submit.querySelector('input[name="phone"]').value =
-          iti.getNumber();
-      }
       // use this trick to get the submit button & disable it using plain javascript
       var submitButton = e.target.querySelector("#_form_110_submit");
       submitButton.disabled = true;
@@ -688,53 +639,11 @@ window._load_script = function (url, callback, isSubmit) {
       ).replace(/%0A/g, "\\n");
       var err = form_to_submit.querySelector("._form_error");
       err ? err.parentNode.removeChild(err) : false;
-      async function submitForm() {
-        var formData = new FormData();
-        const searchParams = new URLSearchParams(serialized);
-        searchParams.forEach((value, key) => {
-          if (key !== "hideButton") {
-            formData.append(key, value);
-          }
-        });
-        let request = {
-          headers: {
-            Accept: "application/json",
-          },
-          body: formData,
-          method: "POST",
-        };
-
-        let pageUrlParams = new URLSearchParams(window.location.search);
-        if (pageUrlParams.has("t")) {
-          request.headers.Authorization = "Bearer " + pageUrlParams.get("t");
-        }
-        const response = await fetch(
-          "https://strategic31677.activehosted.com/proc.php?jsonp=true",
-          request
-        );
-
-        return response.json();
-      }
-      if (formSupportsPost) {
-        submitForm()
-          .then((data) => {
-            eval(data.js);
-          })
-          .catch(() => {
-            _show_error(
-              "110",
-              "Sorry, your submission failed. Please try again."
-            );
-          });
-      } else {
-        _load_script(
-          "https://strategic31677.activehosted.com/proc.php?" +
-            serialized +
-            "&jsonp=true",
-          null,
-          true
-        );
-      }
+      _load_script(
+        "//ac.strategic.ae/proc.php?" + serialized + "&jsonp=true",
+        null,
+        true
+      );
     }
     return false;
   };

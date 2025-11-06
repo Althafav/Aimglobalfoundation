@@ -3,68 +3,12 @@ window.cfields = {
   12: "mobile_phone",
   3: "country",
   4: "nature_of_business",
-  61: "aim_portfolio",
-  275: "aim_partnership_types",
-  228: "aim_interests",
   229: "aim_download_brochure",
-  230: "aim_download_sponsorship_packages",
-  231: "aim_subscribe_to_newsletter",
-  365: "aim_sponsorship_budget_range",
-  366: "aim_preferred_sponsorship_package",
-  368: "aim_preferred_title_sponsor",
-  367: "aim_target_market_for_sponsorship",
-  99: "nationality",
-  6: "message",
-  328: "mainsource",
-  329: "subsource",
+  338: "aim_foundation_interest",
+  337: "aim_foundation_specific_interest",
   38: "forms_submitted",
 };
-window._show_thank_you = function (id, message, trackcmp_url, email) {
-  var form = document.getElementById("_form_" + id + "_"),
-    thank_you = form.querySelector("._form-thank-you");
-  form.querySelector("._form-content").style.display = "none";
-  // thank_you.innerHTML = message;
-  var firstname = $('input[name="firstname"]').val();
-  window.location.href = `/forms/thank-you?user=${firstname}`;
-  thank_you.style.display = "none";
-  const vgoAlias =
-    typeof visitorGlobalObjectAlias === "undefined"
-      ? "vgo"
-      : visitorGlobalObjectAlias;
-  var visitorObject = window[vgoAlias];
-  if (email && typeof visitorObject !== "undefined") {
-    visitorObject("setEmail", email);
-    visitorObject("update");
-  } else if (typeof trackcmp_url != "undefined" && trackcmp_url) {
-    // Site tracking URL to use after inline form submission.
-    _load_script(trackcmp_url);
-  }
-  if (typeof window._form_callback !== "undefined") window._form_callback(id);
-};
-window._show_unsubscribe = function (id, message, trackcmp_url, email) {
-  var form = document.getElementById("_form_" + id + "_"),
-    unsub = form.querySelector("._form-thank-you");
-  var branding = form.querySelector("._form-branding");
-  if (branding) {
-    branding.style.display = "none";
-  }
-  form.querySelector("._form-content").style.display = "none";
-  unsub.style.display = "block";
-  form.insertAdjacentHTML("afterend", message);
-  const vgoAlias =
-    typeof visitorGlobalObjectAlias === "undefined"
-      ? "vgo"
-      : visitorGlobalObjectAlias;
-  var visitorObject = window[vgoAlias];
-  if (email && typeof visitorObject !== "undefined") {
-    visitorObject("setEmail", email);
-    visitorObject("update");
-  } else if (typeof trackcmp_url != "undefined" && trackcmp_url) {
-    // Site tracking URL to use after inline form submission.
-    _load_script(trackcmp_url);
-  }
-  if (typeof window._form_callback !== "undefined") window._form_callback(id);
-};
+
 window._show_error = function (id, message, html) {
   var form = document.getElementById("_form_" + id + "_"),
     err = document.createElement("div"),
@@ -80,7 +24,6 @@ window._show_error = function (id, message, html) {
   var submitButton = form.querySelector('[id^="_form"][id$="_submit"]');
   submitButton.disabled = false;
   submitButton.classList.remove("processing");
-  submitButton.innerHTML = "Submit";
   if (html) {
     var div = document.createElement("div");
     div.className = "_error-html";
@@ -88,58 +31,12 @@ window._show_error = function (id, message, html) {
     err.appendChild(div);
   }
 };
-window._show_pc_confirmation = function (id, header, detail, show, email) {
-  var form = document.getElementById("_form_" + id + "_"),
-    pc_confirmation = form.querySelector("._form-pc-confirmation");
-  if (pc_confirmation.style.display === "none") {
-    form.querySelector("._form-content").style.display = "none";
-    pc_confirmation.innerHTML =
-      "<div class='_form-title'>" +
-      header +
-      "</div>" +
-      "<p>" +
-      detail +
-      "</p>" +
-      "<button class='_submit' id='hideButton'>Manage preferences</button>";
-    pc_confirmation.style.display = "block";
-    var mp = document.querySelector('input[name="mp"]');
-    mp.value = "0";
-  } else {
-    form.querySelector("._form-content").style.display = "inline";
-    pc_confirmation.style.display = "none";
-  }
-
-  var hideButton = document.getElementById("hideButton");
-  // Add event listener to the button
-  hideButton.addEventListener("click", function () {
-    var submitButton = document.querySelector("#_form_514_submit");
-    submitButton.disabled = false;
-    submitButton.classList.remove("processing");
-    submitButton.innerHTML = "Submit";
-    var mp = document.querySelector('input[name="mp"]');
-    mp.value = "1";
-    window.location.href = window.location.href;
-  });
-
-  const vgoAlias =
-    typeof visitorGlobalObjectAlias === "undefined"
-      ? "vgo"
-      : visitorGlobalObjectAlias;
-  var visitorObject = window[vgoAlias];
-  if (email && typeof visitorObject !== "undefined") {
-    visitorObject("setEmail", email);
-    visitorObject("update");
-  } else if (typeof trackcmp_url != "undefined" && trackcmp_url) {
-    // Site tracking URL to use after inline form submission.
-    _load_script(trackcmp_url);
-  }
-  if (typeof window._form_callback !== "undefined") window._form_callback(id);
-};
 window._load_script = function (url, callback, isSubmit) {
   var head = document.querySelector("head"),
     script = document.createElement("script"),
     r = false;
-  var submitButton = document.querySelector("#_form_514_submit");
+  var submitButton = document.querySelector("#_form_466_submit");
+  script.type = "text/javascript";
   script.charset = "utf-8";
   script.src = url;
   if (callback) {
@@ -154,15 +51,14 @@ window._load_script = function (url, callback, isSubmit) {
     if (isSubmit) {
       if (script.src.length > 10000) {
         _show_error(
-          "394",
+          "466",
           "Sorry, your submission failed. Please shorten your responses and try again."
         );
       } else {
-        _show_error("394", "Sorry, your submission failed. Please try again.");
+        _show_error("466", "Sorry, your submission failed. Please try again.");
       }
       submitButton.disabled = false;
       submitButton.classList.remove("processing");
-      submitButton.innerHTML = "Submit";
     }
   };
 
@@ -199,31 +95,14 @@ window._load_script = function (url, callback, isSubmit) {
     }
   };
   var _removed = false;
-  var form_to_submit = document.getElementById("_form_514_");
+  var form_to_submit = document.getElementById("_form_466_");
   var allInputs = form_to_submit.querySelectorAll("input, select, textarea"),
     tooltips = [],
     submitted = false;
 
   var getUrlParam = function (name) {
-    if (name.toLowerCase() !== "email") {
-      var params = new URLSearchParams(window.location.search);
-      return params.get(name) || false;
-    }
-    // email is a special case because a plus is valid in the email address
-    var qString = window.location.search;
-    if (!qString) {
-      return false;
-    }
-    var parameters = qString.substr(1).split("&");
-    for (var i = 0; i < parameters.length; i++) {
-      var parameter = parameters[i].split("=");
-      if (parameter[0].toLowerCase() === "email") {
-        return parameter[1] === undefined
-          ? true
-          : decodeURIComponent(parameter[1]);
-      }
-    }
-    return false;
+    var params = new URLSearchParams(window.location.search);
+    return params.get(name) || false;
   };
 
   var acctDateFormat = "%d/%B/%Y";
@@ -616,14 +495,15 @@ window._load_script = function (url, callback, isSubmit) {
       if (el != null) {
         var sitekey = el.getAttribute("data-sitekey");
         var stoken = el.getAttribute("data-stoken");
-        grecaptcha.render(recaptcha_id, { sitekey: sitekey, stoken: stoken });
+        try {
+          grecaptcha.render(recaptcha_id, { sitekey: sitekey, stoken: stoken });
+        } catch (e) {}
       }
     }
   };
   _load_script(
     "https://www.google.com/recaptcha/api.js?onload=recaptcha_callback&render=explicit"
   );
-
   var _form_serialize = function (form) {
     if (!form || form.nodeName !== "FORM") {
       return;
@@ -732,12 +612,22 @@ window._load_script = function (url, callback, isSubmit) {
     e.preventDefault();
     if (validate_form()) {
       // use this trick to get the submit button & disable it using plain javascript
-      var submitButton = e.target.querySelector("#_form_514_submit");
+      var submitButton = e.target.querySelector("#_form_466_submit");
+      const btnText = submitButton.querySelector(".btn-text");
+      const spinner = submitButton.querySelector(".spinner");
+
+      // disable button and show spinner
       submitButton.disabled = true;
-      submitButton.classList.add("processing");
-      submitButton.innerHTML = 'Processing... <span class="loader"></span>';
+      btnText.textContent = "Processing...";
+      spinner.classList.remove("hidden");
+
+      setTimeout(() => {
+        submitButton.disabled = false;
+        btnText.textContent = "Submit";
+        spinner.classList.add("hidden");
+      }, 3000);
       var serialized = _form_serialize(
-        document.getElementById("_form_514_")
+        document.getElementById("_form_466_")
       ).replace(/%0A/g, "\\n");
       var err = form_to_submit.querySelector("._form_error");
       err ? err.parentNode.removeChild(err) : false;
@@ -745,186 +635,32 @@ window._load_script = function (url, callback, isSubmit) {
         var formData = new FormData();
         const searchParams = new URLSearchParams(serialized);
         searchParams.forEach((value, key) => {
-          if (key !== "hideButton") {
-            formData.append(key, value);
-          }
-          //formData.append(key, value);
+          formData.append(key, value);
         });
-        let request = {
+
+        const response = await fetch("//ac.strategic.ae/proc.php?jsonp=true", {
           headers: {
             Accept: "application/json",
           },
           body: formData,
           method: "POST",
-        };
-
-        let pageUrlParams = new URLSearchParams(window.location.search);
-        if (pageUrlParams.has("t")) {
-          request.headers.Authorization = "Bearer " + pageUrlParams.get("t");
-        }
-        const response = await fetch(
-          "https://strategic31677.activehosted.com/proc.php?jsonp=true",
-          request
-        );
+        });
         return response.json();
       }
+
       if (formSupportsPost) {
         submitForm().then((data) => {
           eval(data.js);
         });
       } else {
         _load_script(
-          "https://strategic31677.activehosted.com/proc.php?" +
-            serialized +
-            "&jsonp=true",
+          "//ac.strategic.ae/proc.php?" + serialized + "&jsonp=true",
           null,
           true
         );
       }
 
-      if ($("#brochure").prop("checked") == true) {
-        downloadDocument2(
-          "AIM Brochure 2026.pdf",
-          "https://assets-us-01.kc-usercontent.com/615577b9-4e2b-0074-b4f8-20f11d30f5ae/0ac855ad-c61a-49d6-affe-5d8c20a65251/AIM%20Brochure%202026.pdf"
-        );
-      }
-
-      if ($("#Sponsorship").prop("checked") == true) {
-        downloadDocument(
-          "AIM Sponsorship Packages.pdf",
-          "/documents/Sponsorship_Packages.pdf"
-        );
-      }
       window.scrollTo(0, 0);
-
-      /////Monday PUSH API Starts/////
-      var interest = $('input[name="field[228][]"]:checked')
-        .map(function () {
-          if (
-            $(this).val() == "Partner" ||
-            $(this).val() == "Becoming Event Partner" ||
-            $(this).val() == "Supporting Partner"
-          ) {
-            return "Event Partner";
-          } else {
-            return $(this).val().trim();
-          }
-        })
-        .get();
-
-      var firstname = $('input[name="firstname"]').val();
-      var lastname = $('input[name="lastname"]').val();
-      var name = `${firstname} ${lastname}`;
-      var organization = $('input[name="customer_account"]').val();
-      var email = $('input[name="email"]').val();
-      var jobTitle = $('input[name="field[23]"]').val();
-
-      var mobileNumber = $('input[name="field[12]"]').val();
-      var phoneCode = $('select[name="phoneCode"]').val();
-      var mobileText = `+${phoneCode} ${mobileNumber}`;
-
-      var country = $('select[name="field[3]"]').val();
-
-      var formSubmitted = $('input[name="field[38]"]').val();
-
-      var businessNature = $('select[name="field[4]"]').val();
-
-      var mainSource = $('input[name="field[328]"]').val();
-      var subSource = $('input[name="field[329]"]').val();
-      const leadType = $('input[name="leadType"]').val();
-
-      let columns = [
-        {
-          label: "name",
-          type: "text",
-          value: name,
-          list_value: [],
-        },
-        {
-          label: "lead_company",
-          type: "text",
-          value: organization,
-          list_value: [],
-        },
-        {
-          label: "text2__1",
-          type: "text",
-          value: jobTitle,
-          list_value: [],
-        },
-        {
-          label: "dup__of_mobile8__1",
-          type: "text",
-          value: mobileText,
-          list_value: [],
-        },
-        {
-          label: "country____1",
-          type: "text",
-          value: country,
-          list_value: [],
-        },
-        {
-          label: "text49__1",
-          type: "text",
-          value: formSubmitted,
-          list_value: [],
-        },
-        {
-          label: "interested_in____1",
-          type: "checkbox",
-          value: "",
-          list_value: interest,
-        },
-
-        {
-          label: "nature_of_business____1",
-          type: "text",
-          value: businessNature,
-          list_value: [],
-        },
-
-        {
-          label: "text6__1",
-          type: "text",
-          value: mainSource,
-          list_value: [],
-        },
-
-        {
-          label: "text68__1",
-          type: "text",
-          value: subSource,
-          list_value: [],
-        },
-      ];
-
-      // Dynamic data object
-      let requestData = {
-        lead_type: leadType,
-        group_id: "topics",
-        lead_status: "New Lead",
-        board_id: "7268050149",
-        item_name: name,
-        email: email,
-        column_values: columns,
-      };
-
-      // AJAX request
-      $.ajax({
-        url: "https://payment.aimcongress.com/api/generic/MondayPush",
-        type: "POST",
-        contentType: "application/json",
-        data: JSON.stringify(requestData),
-        success: function (response) {
-          console.log("Success:", response);
-        },
-        error: function (xhr, status, error) {
-          console.error("Error:", error);
-        },
-      });
-
-      /////Monday PUSH API Ends/////
     }
     return false;
   };

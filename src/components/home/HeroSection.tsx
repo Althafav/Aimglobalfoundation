@@ -11,7 +11,7 @@ export default function HeroSection({
   bannervideosrc,
 }: any) {
   return (
-    <div className=" relative py-20 sm:py-20  flex items-center hero-section-wrapper">
+    <div className=" relative py-20 sm:py-20  flex items-center bg-gradient-3">
       {/* <div className="absolute inset-0 bg-[linear-gradient(to_top,rgba(255,255,255,1)_31.08%,rgba(255,255,255,0)_100.04%)]"></div> */}
       <div className="container mx-auto">
         <div className="grid sm:grid-cols-2 gap-10 items-center">
@@ -42,19 +42,12 @@ export default function HeroSection({
               width="100%"
               autoPlay
               loop
-              className="brightness-50 h-full w-full object-cover object-top"
-              playsInline
               muted
+              playsInline
+              className="brightness-50 h-full w-full object-cover object-top"
               poster={bannerimage}
-              controls={false}
-              preload="auto"
             >
-              <source
-                src={bannervideosrc}
-                type="video/mp4"
-                className=""
-                width="100%"
-              />
+              <source src={bannervideosrc} type="video/mp4" />
             </video>
           </div>
         </div>
